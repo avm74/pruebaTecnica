@@ -27,6 +27,8 @@ Route::post('/register', [RegisterController::class, 'postRegister']);
 // Home
 Route::get('/home', [HomeController::class, 'getHome']);
 Route::get('/logout', [HomeController::class, 'logout']);
+Route::post('/create-document', [HomeController::class, 'createDocument']);
+Route::get('/delete-document/{documentId}', [HomeController::class, 'deleteDocument']);
 
 // Peticiones
 Route::get('/check-username/{username}', [RegisterController::class, 'checkUsernameAvailability']);

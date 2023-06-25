@@ -522,8 +522,14 @@ video {
 .mb-4 {
   margin-bottom: 1rem;
 }
+.ml-auto {
+  margin-left: auto;
+}
 .flex {
   display: flex;
+}
+.table {
+  display: table;
 }
 .grid {
   display: grid;
@@ -572,6 +578,9 @@ video {
 }
 .justify-center {
   justify-content: center;
+}
+.place-self-center {
+  place-self: center;
 }
 .overflow-hidden {
   overflow: hidden;
@@ -628,6 +637,9 @@ video {
 }
 .p-6 {
   padding: 1.5rem;
+}
+.p-2 {
+  padding: 0.5rem;
 }
 .px-6 {
   padding-left: 1.5rem;
