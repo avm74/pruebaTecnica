@@ -6,15 +6,24 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <script>
             function goToDelete(documentId){
-                window.location = "/delete-document/" + documentId;
+                window.location = "/delete/" + documentId;
             }
 
             function goToEdit(documentId){
+                window.location = "/edit/" + documentId;
+            }
 
+            function goToCreate(){
+                window.location = "/create";
             }
         </script>
     </head>
     <body class="h-screen bg-gray-400 flex flex-col items-center justify-center">
+        <div class="flex flex-row justify-center items-center bg-gray-100 w-full h-10 absolute top-0">
+            <div class="ml-2 font-semibold text-lg hover:text-gray-400">
+                <a href="/logout">Cerrar sesión</a>
+            </div>
+        </div>
         ¡Bienvenido {{$connectedUser->username}}!
         <div>
             <a href="/logout">Cerrar sesión</a>
@@ -29,23 +38,14 @@
                 {{session()->get('error')}}
             </div>
         @endif
-        <form id="newDocument" action="/create-document" method="POST" class="border-2 p-4">
-            @csrf
-            <label for="name">Nombre del documento</label>
-            <input type="text" name="name" id="name">
-            <label for="description">Descripción</label>
-            <textarea id="description" name="description"></textarea>
-            <label for="relevance">Relevancia</label>
-            <select id="relevance" name="relevance">
-                <option value="Alta">Alta</option>
-                <option value="Media">Media</option>
-                <option value="Baja">Baja</option>
-            </select>
-            <button type="submit" class="rounded-sm bg-white mt-2">
-                Crear documento
+
+        <div>
+            <button type="button" onclick="goToCreate()" class="rounded-sm bg-white mt-2 w-48 text-center">
+                Crear nuevo documento
             </button>
-        </form>
-        <div id="documentList" class="border-2 p-4 mt-4">
+        </div>
+
+        <div id="documentList" class="border-2 p-4 mt-4 max-w-6xl">
             @if(count($documents) < 1)
                 Aún no has creado documentos
             @else
