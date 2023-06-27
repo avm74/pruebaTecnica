@@ -14,8 +14,13 @@ class DeleteController extends Controller
     public function getDelete($documentId){
 
         $document = Document::find($documentId);
+        $user = User::where('username', '=', session('username'))->first();
 
-        if(!$document){
+        if(!$user){
+            return redirect()->action([LoginController::class, 'getLogin'])->with("error", "Login no válido");
+        }
+
+        if(!$document || $document->user_id != $user->id){
             return redirect()->action([HomeController::class, 'getHome'])->with("error", "Error en el borrado");
         }
 
