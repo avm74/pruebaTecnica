@@ -11,7 +11,11 @@ use PhpParser\Comment\Doc;
 
 class DeleteController extends Controller
 {
-    public function getDelete($documentId){
+    public function getDelete($documentId, Request $request){
+
+        if(!$request->session()->has('username')){
+            return redirect()->action([LoginController::class, 'getLogin']);
+        }
 
         $document = Document::find($documentId);
         $user = User::where('username', '=', session('username'))->first();

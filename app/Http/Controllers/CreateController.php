@@ -42,7 +42,7 @@ class CreateController extends Controller
         }
 
         if(empty($description)){
-            return redirect()->action([CreateController::class, 'getCreate'])->with("error", "La descripción no puede estar vacía");
+            return redirect()->action([CreateController::class, 'getCreate'])->with("error", "La descripción del documento no puede estar vacía");
         }
 
         if(empty($relevance)){

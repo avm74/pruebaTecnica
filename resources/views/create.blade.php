@@ -8,6 +8,10 @@
             function validateForm(){
 
                 document.getElementById('alert').style.display = 'none';
+                let externalAlert = document.getElementById('externalAlert');
+                if(externalAlert){
+                    externalAlert.style.display = 'none';
+                }
                 document.getElementById('alertText').innerHTML = '';
 
                 let name = document.getElementById('name').value;
@@ -60,12 +64,12 @@
     </div>
     <body class="h-screen bg-gray-400 flex flex-col items-center justify-center">
         @if(session()->has('success'))
-            <div class="bg-green-300 text-green-500 border-2 border-green-500 border-r-2 p-4 mb-4 font-semibold">
+            <div id="externalAlert" class="bg-green-300 text-green-500 border-2 border-green-500 border-r-2 p-4 mb-4 font-semibold">
                 {{session()->get('success')}}
             </div>
         @endif
         @if(session()->has('error'))
-            <div class="bg-red-300 text-red-500 border-2 border-red-500 border-r-2 p-4 mb-4 font-semibold">
+            <div id="externalAlert" class="bg-red-300 text-red-500 border-2 border-red-500 border-r-2 p-4 mb-4 font-semibold">
                 {{session()->get('error')}}
             </div>
         @endif
