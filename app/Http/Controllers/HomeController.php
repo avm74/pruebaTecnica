@@ -27,7 +27,50 @@ class HomeController extends Controller
 
         $viewData = [
             'connectedUser' => $user,
-            'documents' => $documents
+            'documents' => $documents,
+            'filter' => ''
+        ];
+
+        return view('home', $viewData);
+
+    }
+
+    public function postHome(Request $request, Functions $helper){
+
+        if(!$request->session()->has('username')){
+            return redirect()->action([LoginController::class, 'getLogin']);
+        }
+
+        $user = User::where('username', '=', session('username'))->first();
+
+        if(!$user){
+            return redirect()->action([LoginController::class, 'getLogin'])->with("error", "Login no válido");
+        }
+
+        $filter = $helper->sanitizeString($request->input('relevanceFilter'));
+
+        $documents = Document::where('user_id', '=', $user->id)->get();
+
+        if($filter != ''){
+
+            switch ($filter){
+                case 'Alta':
+                    $documents = Document::where('user_id', '=', $user->id)->where('relevance', '=', 'Alta')->get();
+                    break;
+                case 'Media':
+                    $documents = Document::where('user_id', '=', $user->id)->where('relevance', '=', 'Media')->get();
+                    break;
+                case 'Baja':
+                    $documents = Document::where('user_id', '=', $user->id)->where('relevance', '=', 'Baja')->get();
+                    break;
+            }
+
+        }
+
+        $viewData = [
+            'connectedUser' => $user,
+            'documents' => $documents,
+            'filter' => $filter
         ];
 
         return view('home', $viewData);
@@ -38,8 +81,9 @@ class HomeController extends Controller
 
         if($request->session()->has('username')){
             $request->session()->forget('username');
+            return redirect()->action([LoginController::class, 'getLogin'])->with("success", "Sesión cerrada");
         }
 
-        return redirect()->action([LoginController::class, 'getLogin'])->with("success", "Sesión cerrada");
+        return redirect()->action([LoginController::class, 'getLogin'])->with("error", "No había una sesión iniciada");
     }
 }

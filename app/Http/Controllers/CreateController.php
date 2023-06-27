@@ -13,6 +13,9 @@ class CreateController extends Controller
 {
     public function getCreate(Request $request){
 
+        if(!$request->session()->has('username')){
+            return redirect()->action([LoginController::class, 'getLogin']);
+        }
 
         $viewData = [
 
@@ -35,23 +38,23 @@ class CreateController extends Controller
         $relevance = $helper->sanitizeString($request->input('relevance'));
 
         if(empty($name)){
-            return redirect()->action([CreateController::class, 'getEdit'])->with("error", "El nombre no puede estar vacío");
+            return redirect()->action([CreateController::class, 'getCreate'])->with("error", "El nombre del documento no puede estar vacío");
         }
 
         if(empty($description)){
-            return redirect()->action([CreateController::class, 'getEdit'])->with("error", "La descripción no puede estar vacía");
+            return redirect()->action([CreateController::class, 'getCreate'])->with("error", "La descripción no puede estar vacía");
         }
 
         if(empty($relevance)){
-            return redirect()->action([CreateController::class, 'getEdit'])->with("error", "Debes elegir una categoría de relevancia");
+            return redirect()->action([CreateController::class, 'getCreate'])->with("error", "Debes elegir una categoría de relevancia");
         }
 
         if(strlen($name) > 30){
-            return redirect()->action([CreateController::class, 'getEdit'])->with("error", "El nombre del documento no puede tener más de 30 caracteres");
+            return redirect()->action([CreateController::class, 'getCreate'])->with("error", "El nombre del documento no puede tener más de 30 caracteres");
         }
 
         if(strlen($description) > 300){
-            return redirect()->action([CreateController::class, 'getEdit'])->with("error", "La descripción del documento no puede tener más de 300 caracteres");
+            return redirect()->action([CreateController::class, 'getCreate'])->with("error", "La descripción del documento no puede tener más de 300 caracteres");
         }
 
         $newDocument = new Document();

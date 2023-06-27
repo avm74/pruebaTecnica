@@ -16,18 +16,26 @@
             function goToCreate(){
                 window.location = "/create";
             }
+
+            function filterList(){
+                document.getElementById('form').submit();
+            }
         </script>
     </head>
     <body class="h-screen bg-gray-400 flex flex-col items-center justify-center">
         <div class="flex flex-row justify-center items-center bg-gray-100 w-full h-10 absolute top-0">
             <div class="ml-2 font-semibold text-lg hover:text-gray-400">
-                <a href="/logout">Cerrar sesión</a>
+                <a href="/logout">
+                    Cerrar sesión
+                </a>
             </div>
         </div>
-        ¡Bienvenido {{$connectedUser->username}}!
-        <div>
-            <a href="/logout">Cerrar sesión</a>
+
+        <div class="text-center mb-8 flex flex-col">
+            <span class="font-bold text-lg">Bienvenido a tu listado de documentos</span>
+            <span>Has iniciado sesión como <span class="font-semibold">{{$connectedUser->username}}</span></span>
         </div>
+
         @if(session()->has('success'))
             <div class="bg-green-300 text-green-500 border-2 border-green-500 border-r-2 p-4 mb-4 font-semibold">
                 {{session()->get('success')}}
@@ -40,14 +48,35 @@
         @endif
 
         <div>
-            <button type="button" onclick="goToCreate()" class="rounded-sm bg-white mt-2 w-48 text-center">
+            <button type="button" onclick="goToCreate()" class="rounded-sm bg-white w-48 text-center">
                 Crear nuevo documento
             </button>
         </div>
 
+
         <div id="documentList" class="border-2 p-4 mt-4 max-w-6xl">
             @if(count($documents) < 1)
-                Aún no has creado documentos
+                <span class="font-semibold">No hay documentos disponibles</span>
+                <div>
+                    <form action="/home" method="POST" id="form">
+                        @csrf
+                        <label for="relevanceFilter">Prueba con otro tipo de relevancia</label>
+                        <select id="relevanceFilter" name="relevanceFilter" onchange="filterList()" class="font-normal">
+                            <option value="" @if($filter == '' || !isset($filter)) selected @endif>
+                                Todas
+                            </option>
+                            <option value="Alta" @if($filter == 'Alta') selected @endif>
+                                Alta
+                            </option>
+                            <option value="Media" @if($filter == 'Media') selected @endif>
+                                Media
+                            </option>
+                            <option value="Baja" @if($filter == 'Baja') selected @endif>
+                                Baja
+                            </option>
+                        </select>
+                    </form>
+                </div>
             @else
                 <table>
                     <tr class="border-2 p-4 mt-4">
@@ -62,6 +91,24 @@
                         </th>
                         <th class="border-2 p-2">
                             Relevancia
+                            <form action="/home" method="POST" id="form">
+                                @csrf
+                                <select id="relevanceFilter" name="relevanceFilter" onchange="filterList()" class="font-normal">
+                                    <option value="" @if($filter == '' || !isset($filter)) selected @endif>
+                                        Todas
+                                    </option>
+                                    <option value="Alta" @if($filter == 'Alta') selected @endif>
+                                        Alta
+                                    </option>
+                                    <option value="Media" @if($filter == 'Media') selected @endif>
+                                        Media
+                                    </option>
+                                    <option value="Baja" @if($filter == 'Baja') selected @endif>
+                                        Baja
+                                    </option>
+                                </select>
+                            </form>
+
                         </th>
                         <th class="border-2 p-2">
                             Última edición

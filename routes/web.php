@@ -30,6 +30,7 @@ Route::post('/register', [RegisterController::class, 'postRegister']);
 
 // Home
 Route::get('/home', [HomeController::class, 'getHome']);
+Route::post('/home', [HomeController::class, 'postHome']);
 Route::get('/logout', [HomeController::class, 'logout']);
 
 // Crear documento
