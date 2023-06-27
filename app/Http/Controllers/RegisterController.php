@@ -11,6 +11,10 @@ class RegisterController extends Controller
 {
     public function getRegister(Request $request){
 
+        if($request->session()->has('username')){
+            return redirect()->action([HomeController::class, 'getHome']);
+        }
+
         $viewData = [
 
         ];

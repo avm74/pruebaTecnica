@@ -18,8 +18,13 @@ class EditController extends Controller
         }
 
         $document = Document::find($documentId);
+        $user = User::where('username', '=', session('username'))->first();
 
-        if(!$document){
+        if(!$user){
+            return redirect()->action([LoginController::class, 'getLogin'])->with("error", "Login no válido");
+        }
+
+        if(!$document || $document->user_id != $user->id){
             return redirect()->action([HomeController::class, 'getHome'])->with("error", "Documento no encontrado");
         }
 
@@ -44,11 +49,11 @@ class EditController extends Controller
         $relevance = $helper->sanitizeString($request->input('relevance'));
 
         if(empty($name)){
-            return redirect()->action([EditController::class, 'getEdit'], ['documentId' => $document->id])->with("error", "El nombre no puede estar vacío");
+            return redirect()->action([EditController::class, 'getEdit'], ['documentId' => $document->id])->with("error", "El nombre del documento no puede estar vacío");
         }
 
         if(empty($description)){
-            return redirect()->action([EditController::class, 'getEdit'], ['documentId' => $document->id])->with("error", "La descripción no puede estar vacía");
+            return redirect()->action([EditController::class, 'getEdit'], ['documentId' => $document->id])->with("error", "La descripcióndel documento no puede estar vacía");
         }
 
         if(empty($relevance)){
